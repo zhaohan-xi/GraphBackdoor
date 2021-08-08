@@ -1,6 +1,6 @@
 # GraphBackdoor
 
-This is a light-weight implementation of our **USENIX Security'21** paper **[Graph Backdoor](https://arxiv.org/abs/2006.11890)**. Comparing with original codes, we simplify following functionalities for a higher running efficiency:
+This is a light-weight implementation of our **USENIX Security'21** paper **[Graph Backdoor](https://arxiv.org/abs/2006.11890)**. We simplify following functionalities for a higher running efficiency:
 
 - **graph encoding**: instead of using a pretrained attention network to encode graphs, we find that directly use input-space aggregation can also lead to a good input representation, i.e., directly aggregate feature matrix and topology matrix by 1-hop multiplication or 2-hop. See ./trojan/input.py
 - **blending function**: re-searching a subgraph to blend trigger has high cost especially on large graphs. Instead, one can directly use a fixed locality as trigger-embedded region and always blend generated trigger in this region.
