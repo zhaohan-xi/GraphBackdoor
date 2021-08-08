@@ -1,0 +1,18 @@
+# Configuration files
+.vscode
+*.pyc
+
+# Temp files
+__pycache__
+.ipynb_checkpoints
+
+# Scripts
+*.txt
+archive
+config
+utils_org
+prepare
+save
+main/android
+
+# git rm -rf --cached . 
