@@ -29,7 +29,7 @@ We organize the structure of our files as follows:
 │   ├──  datareader.sh         # data loader codes
 │   ├──  graph.py              # simple utility function(s) related to graph processing
 │   └──  mask.py               # the mask functions to scale graphs into same size or scale back
-└──  config.py                 # attack configurations            
+└──  config.py                 # all configurations            
 
 ```
 
