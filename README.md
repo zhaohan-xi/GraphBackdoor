@@ -39,7 +39,7 @@ We organize the structure of our files as follows:
 
 
 ## Useful resources:
-- [TU graph kernel](https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets): most of our datasets come from this source. In some cases, the we need to change the graph set such as remove some classes without too many instances, or remove graphs with small node scale.
+- [TU graph set](https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets): most of our datasets come from this source. In some cases, we need to change the graph set such as remove some classes without enough instances, or remove graphs with small node scale.
 - [DGL](https://docs.dgl.ai): we use DGL to implement our GNNs in this released version, because it has some high-efficient implementations such as [GCN](https://docs.dgl.ai/en/0.6.x/tutorials/models/1_gnn/1_gcn.html), [GAT](https://docs.dgl.ai/en/0.4.x/tutorials/models/1_gnn/9_gat.html), [GraphSAGE](https://github.com/dmlc/dgl/blob/master/examples/pytorch/graphsage/model.py).
 - [TU graph datareader](https://github.com/bknyaz/graph_nn/blob/master/graph_unet.py): this repo implements a data loader to process TU graph datasets under their raw storage formats. Our `./utils/datareader.py` and `./utils/batch.py` contain the modified codes and we appreciate the authors' efforts!
 
