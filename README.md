@@ -7,7 +7,7 @@ This is a light-weight implementation of our **USENIX Security'21** paper **[Gra
 - **blending function**: re-searching a subgraph to blend trigger has high cost especially on large graphs. Instead, one can always blend a generated trigger in a fixed region.
 - **optimization objective**: we find the output-end optimization (based on labels) can realize similar attack efficacy comparing with imtermediate activations, but can significantly simplify the implementation. Thus we change to use label-level objective.
 
-If you aim to compare the performance between this work and your novel attacks, or develop a defense against it, feel free to use this version on your work due to its easier accessibility and higher efficiency.
+If you aim to compare the performance between this work and your novel attacks, or develop a defense against it, feel free to use this release on your work due to its easier accessibility and higher efficiency.
 
 ## Guide
 
