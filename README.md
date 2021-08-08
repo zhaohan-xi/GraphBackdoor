@@ -4,7 +4,7 @@ This is a light-weight implementation of our **USENIX Security'21** paper **[Gra
 
 - **graph encoding**: instead of using a pretrained attention network to encode graphs, we find that directly using input-space aggregation can also lead to a good input representation, i.e., directly aggregate feature matrix and topology matrix by 1-hop multiplication or 2-hop. See ./trojan/input.py
 - **blending function**: re-searching a subgraph to blend trigger has high cost especially on large graphs. Instead, one can directly use a fixed locality as trigger-embedded region and always blend generated trigger in this region.
-- **optimization**: we find the output-end optimization (based on labels) can realize similar attack efficacy comparing with imtermediate activations, but can significantly simplify the implementation. Thus we use label-level objective to optimize the attack.
+- **optimization objective**: we find the output-end optimization (based on labels) can realize similar attack efficacy comparing with imtermediate activations, but can significantly simplify the implementation. Thus we use label-level objective to optimize the attack.
 
 If you aim to compare the performance between this work and your novel attacks, or develop a defense against it, you can directly use this version on your work due to its easier accessibility and higher efficiency.
 
