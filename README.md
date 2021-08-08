@@ -2,7 +2,7 @@
 
 This is a light-weight implementation of our **USENIX Security'21** paper **[Graph Backdoor](https://arxiv.org/abs/2006.11890)**. To be convenient for relevant projects, we simplify following functionalities for a higher running efficiency:
 
-- **GNNs**: now we use DGL-based framework to implement our GNN, which has better memory occupation and running speed.
+- **GNNs**: now we use DGL-based framework to implement our GNN, which has better memory occupation and running speed. For more information about DGL, see **Useful resources**
 - **graph encoding**: using pretrained attention network causes additional time cost. We find that directly aggregating input-space (feature/topology) matrices can also lead to a good input representation. Please see `./trojan/input.py`
 - **blending function**: re-searching a subgraph to blend trigger has high cost especially on large graphs. Instead, one can always blend a generated trigger in a fixed region.
 - **optimization objective**: we find the output-end optimization (based on labels) can realize similar attack efficacy comparing with imtermediate activations, but can significantly simplify the implementation. Thus we change to use label-level objective.
