@@ -58,7 +58,3 @@ Please cite our paper if it is helpful in your own work:
   year={2021}
 }
 ```
-
-
-## Future release
-Later we will release codes under transfer learning setting, now still working on them.
