@@ -143,12 +143,10 @@ def train_gtn(args, model, toponet: GraphTrojanNet, featnet: GraphTrojanNet,
             SendtoCUDA(gid, [init_As, Ainputs, topomasks])    # only send the used graph items to cuda
             rst_bkdA = toponet(
                 Ainputs[gid], topomasks[gid], topo_thrd, cuda, args.topo_activation, 'topo')
-            rst_bkdA = recover_mask(nodenums[gid], topomasks[gid], 'topo')
-            bkd_dr.data['adj_list'][gid] = torch.add(rst_bkdA, init_As[gid])   # only current position in cuda
-            
+            # rst_bkdA = recover_mask(nodenums[gid], topomasks[gid], 'topo')
+            # bkd_dr.data['adj_list'][gid] = torch.add(rst_bkdA, init_As[gid])
+            bkd_dr.data['adj_list'][gid] = torch.add(rst_bkdA[:nodenums[gid], :nodenums[gid]], init_As[gid])   # only current position in cuda
             SendtoCPU(gid, [init_As, Ainputs, topomasks])
-            del rst_bkdA
-            torch.cuda.empty_cache()
             
         loss = forwarding(args, bkd_dr, model, allset, criterion)
         loss.backward()
@@ -178,12 +176,10 @@ def train_gtn(args, model, toponet: GraphTrojanNet, featnet: GraphTrojanNet,
             SendtoCUDA(gid, [init_Xs, Xinputs, featmasks])  # only send the used graph items to cuda
             rst_bkdX = featnet(
                 Xinputs[gid], featmasks[gid], feat_thrd, cuda, args.feat_activation, 'feat')
-            rst_bkdX = recover_mask(nodenums[gid], featmasks[gid], 'feat')
-            bkd_dr.data['features'][gid] = torch.add(rst_bkdX, init_Xs[gid])   # only current position in cuda
-            
+            # rst_bkdX = recover_mask(nodenums[gid], featmasks[gid], 'feat')
+            # bkd_dr.data['features'][gid] = torch.add(rst_bkdX, init_Xs[gid])
+            bkd_dr.data['features'][gid] = torch.add(rst_bkdX[:nodenums[gid]], init_Xs[gid])   # only current position in cuda
             SendtoCPU(gid, [init_Xs, Xinputs, featmasks])
-            del rst_bkdX
-            torch.cuda.empty_cache()
             
         # generate DataLoader
         loss = forwarding(

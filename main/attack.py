@@ -96,16 +96,19 @@ class GraphBackdoor:
                     rst_bkdA = toponet(
                         Ainput_train[gid], topomask_train[gid], self.args.topo_thrd, 
                         self.cpu, self.args.topo_activation, 'topo')
-                    rst_bkdA = recover_mask(nodenums[gid], topomask_train[gid], 'topo')
+                    # rst_bkdA = recover_mask(nodenums[gid], topomask_train[gid], 'topo')
+                    # bkd_dr_train.data['adj_list'][gid] = torch.add(rst_bkdA, init_dr_train.data['adj_list'][gid])
                     bkd_dr_train.data['adj_list'][gid] = torch.add(
-                        rst_bkdA, init_dr_train.data['adj_list'][gid])
+                        rst_bkdA[:nodenums[gid], :nodenums[gid]].detach().cpu(), 
+                        init_dr_train.data['adj_list'][gid])
                 
                     rst_bkdX = featnet(
                         Xinput_train[gid], featmask_train[gid], self.args.feat_thrd, 
                         self.cpu, self.args.feat_activation, 'feat')
-                    rst_bkdX = recover_mask(nodenums[gid], featmask_train[gid], 'feat')
+                    # rst_bkdX = recover_mask(nodenums[gid], featmask_train[gid], 'feat')
+                    # bkd_dr_train.data['features'][gid] = torch.add(rst_bkdX, init_dr_train.data['features'][gid]) 
                     bkd_dr_train.data['features'][gid] = torch.add(
-                        rst_bkdX, init_dr_train.data['features'][gid]) 
+                        rst_bkdX[:nodenums[gid]].detach().cpu(), init_dr_train.data['features'][gid]) 
                     
                 # train GNN
                 train_model(self.args, bkd_dr_train, model, list(set(pset)), list(set(nset)))
@@ -115,16 +118,21 @@ class GraphBackdoor:
                     rst_bkdA = toponet(
                         Ainput_test[gid], topomask_test[gid], self.args.topo_thrd, 
                         self.cpu, self.args.topo_activation, 'topo')
-                    rst_bkdA = recover_mask(nodenums[gid], topomask_test[gid], 'topo')
+                    # rst_bkdA = recover_mask(nodenums[gid], topomask_test[gid], 'topo')
+                    # bkd_dr_test.data['adj_list'][gid] = torch.add(rst_bkdA, 
+                    #     torch.as_tensor(copy.deepcopy(init_dr_test.data['adj_list'][gid])))
                     bkd_dr_test.data['adj_list'][gid] = torch.add(
-                        rst_bkdA, torch.as_tensor(copy.deepcopy(init_dr_test.data['adj_list'][gid])))
+                        rst_bkdA[:nodenums[gid], :nodenums[gid]], 
+                        torch.as_tensor(copy.deepcopy(init_dr_test.data['adj_list'][gid])))
                 
                     rst_bkdX = featnet(
                         Xinput_test[gid], featmask_test[gid], self.args.feat_thrd, 
                         self.cpu, self.args.feat_activation, 'feat')
-                    rst_bkdX = recover_mask(nodenums[gid], featmask_test[gid], 'feat')
+                    # rst_bkdX = recover_mask(nodenums[gid], featmask_test[gid], 'feat')
+                    # bkd_dr_test.data['features'][gid] = torch.add(
+                    #     rst_bkdX, torch.as_tensor(copy.deepcopy(init_dr_test.data['features'][gid])))
                     bkd_dr_test.data['features'][gid] = torch.add(
-                        rst_bkdX, torch.as_tensor(copy.deepcopy(init_dr_test.data['features'][gid])))
+                        rst_bkdX[:nodenums[gid]], torch.as_tensor(copy.deepcopy(init_dr_test.data['features'][gid])))
                     
                 # graph originally in target label
                 yt_gids = [gid for gid in bkd_gids_test 
@@ -155,7 +163,7 @@ class GraphBackdoor:
                         print("Trojaning model is saved at: ", save_path)
                     
                 if abs(bkd_acc-100) <1e-4:
-                    bkd_dr_tosave = copy.deepcopy(bkd_dr_test)
+                    # bkd_dr_tosave = copy.deepcopy(bkd_dr_test)
                     print("Early Termination for 100% Attack Rate")
                     break
         print('Done')

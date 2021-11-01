@@ -82,7 +82,6 @@ def train_model(args, dr_train: DataReader, model, pset, nset):
 
                 for i in range(len(data)):
                     data[i] = data[i].to(cpu)
-                torch.cuda.empty_cache()
         
             losses[key] = torch.div(losses[key], n_samples[key])
         loss = losses['pos'] + args.lambd*losses['neg']
@@ -92,66 +91,66 @@ def train_model(args, dr_train: DataReader, model, pset, nset):
     model.to(cpu)
 
     
-def TrainGNN_v2(args,
-             dr_train,
-             model,
-             fold_id,
-             train_gids,
-             use_optim='Adam',
-             need_print=False):
-    assert torch.cuda.is_available(), "no GPU available"
-    cuda = torch.device('cuda')
-    cpu = torch.device('cpu')
+# def TrainGNN_v2(args,
+#              dr_train,
+#              model,
+#              fold_id,
+#              train_gids,
+#              use_optim='Adam',
+#              need_print=False):
+#     assert torch.cuda.is_available(), "no GPU available"
+#     cuda = torch.device('cuda')
+#     cpu = torch.device('cpu')
                        
-    model.to(cuda)
+#     model.to(cuda)
                        
-    gdata = GraphData(dr_train,
-                      fold_id,
-                      'train',
-                      train_gids)
-    loader = DataLoader(gdata,
-                        batch_size=args.batch_size,
-                        shuffle=False,   
-                        collate_fn=collate_batch)
+#     gdata = GraphData(dr_train,
+#                       fold_id,
+#                       'train',
+#                       train_gids)
+#     loader = DataLoader(gdata,
+#                         batch_size=args.batch_size,
+#                         shuffle=False,   
+#                         collate_fn=collate_batch)
     
-    train_params = list(filter(lambda p: p.requires_grad, model.parameters()))
-    if use_optim=='Adam':
-        optimizer = optim.Adam(train_params, lr=args.lr, weight_decay=args.weight_decay, betas=(0.5, 0.999))
-    else:
-        optimizer = optim.SGD(train_params, lr=args.lr)
-    predict_fn = lambda output: output.max(1, keepdim=True)[1].detach().cpu()
-    loss_fn = F.cross_entropy
+#     train_params = list(filter(lambda p: p.requires_grad, model.parameters()))
+#     if use_optim=='Adam':
+#         optimizer = optim.Adam(train_params, lr=args.lr, weight_decay=args.weight_decay, betas=(0.5, 0.999))
+#     else:
+#         optimizer = optim.SGD(train_params, lr=args.lr)
+#     predict_fn = lambda output: output.max(1, keepdim=True)[1].detach().cpu()
+#     loss_fn = F.cross_entropy
 
-    model.train()
-    for epoch in range(args.epochs):
-        optimizer.zero_grad()
+#     model.train()
+#     for epoch in range(args.epochs):
+#         optimizer.zero_grad()
         
-        loss = 0.0
-        n_samples = 0
-        correct = 0
-        for batch_idx, data in enumerate(loader):
-            for i in range(len(data)):
-                data[i] = data[i].to(cuda)
-            output = model(data)
-            if len(output.shape)==1:
-                output = output.unsqueeze(0)
-            loss += loss_fn(output, data[4])*len(output)
-            n_samples += len(output)
+#         loss = 0.0
+#         n_samples = 0
+#         correct = 0
+#         for batch_idx, data in enumerate(loader):
+#             for i in range(len(data)):
+#                 data[i] = data[i].to(cuda)
+#             output = model(data)
+#             if len(output.shape)==1:
+#                 output = output.unsqueeze(0)
+#             loss += loss_fn(output, data[4])*len(output)
+#             n_samples += len(output)
 
-            for i in range(len(data)):
-                data[i] = data[i].to(cpu)
-            torch.cuda.empty_cache()
+#             for i in range(len(data)):
+#                 data[i] = data[i].to(cpu)
+#             torch.cuda.empty_cache()
             
-            pred = predict_fn(output)
-            correct += pred.eq(data[4].detach().cpu().view_as(pred)).sum().item()
-        acc = 100. * correct / n_samples
-        loss = torch.div(loss, n_samples)
+#             pred = predict_fn(output)
+#             correct += pred.eq(data[4].detach().cpu().view_as(pred)).sum().item()
+#         acc = 100. * correct / n_samples
+#         loss = torch.div(loss, n_samples)
         
-        if need_print and epoch%5==0:
-            print("Epoch {} | Loss {:.4f} | Train Accuracy {:.4f}".format(epoch, loss.item(), acc))
-        loss.backward()
-        optimizer.step()
-    model.to(cpu)
+#         if need_print and epoch%5==0:
+#             print("Epoch {} | Loss {:.4f} | Train Accuracy {:.4f}".format(epoch, loss.item(), acc))
+#         loss.backward()
+#         optimizer.step()
+#     model.to(cpu)
 
 
     
