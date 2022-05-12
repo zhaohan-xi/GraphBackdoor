@@ -15,6 +15,7 @@ def add_model_group(group):
     group.add_argument('--model', type=str, default='gcn', help="used model")
     group.add_argument('--train_ratio', type=float, default=0.5, help="ratio of trainset from whole dataset")
     group.add_argument('--hidden_dim', nargs='+', default=[64, 16], type=int, help='constrain how much products a vendor can have')
+    group.add_argument('--num_head', type=int, default=2, help="GAT head number")
 
     group.add_argument('--batch_size', type=int, default=16)
     group.add_argument('--train_epochs', type=int, default=40)

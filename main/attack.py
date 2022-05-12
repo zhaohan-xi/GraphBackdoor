@@ -43,9 +43,6 @@ class GraphBackdoor:
         featnet = gta.GraphTrojanNet(featdim, self.args.gtn_layernum)
 
         
-        train_params = list(filter(lambda p: p.requires_grad, model.parameters()))
-        optimizer = optim.Adam(train_params, lr=self.args.lr, weight_decay=self.args.weight_decay)
-     
         # init test data
         # NOTE: for data that can only add perturbation on features, only init the topo value
         init_dr_test = self.init_trigger(
@@ -57,7 +54,7 @@ class GraphBackdoor:
         Ainput_test, Xinput_test = gen_input(self.args, init_dr_test, bkd_gids_test)
         
         for rs_step in range(self.args.resample_steps):   # for each step, choose different sample
-    
+            
             # randomly select new graph backdoor samples
             bkd_gids_train, bkd_nids_train, bkd_nid_groups_train = self.bkd_cdd('train')
 

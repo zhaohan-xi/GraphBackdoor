@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 import dgl
-from dgl import DGLGraph
 import dgl.function as fn
 from utils.graph import numpy_to_graph
 

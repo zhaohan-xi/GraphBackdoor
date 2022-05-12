@@ -14,6 +14,7 @@ import torch.optim.lr_scheduler as lr_scheduler
 from utils.datareader import GraphData, DataReader
 from utils.batch import collate_batch
 from model.gcn import GCN
+from model.gat import GAT
 from model.sage import GraphSAGE
 from config import parse_args
 
@@ -45,6 +46,8 @@ def run(args):
     out_dim = loaders['train'].dataset.num_classes
     if args.model == 'gcn':
         model = GCN(in_dim, out_dim, hidden_dim=args.hidden_dim, dropout=args.dropout)
+    elif args.model == 'gat':
+        model = GAT(in_dim, out_dim, hidden_dim=args.hidden_dim, dropout=args.dropout, num_head=args.num_head)
     elif args.model=='sage':
         model = GraphSAGE(in_dim, out_dim, hidden_dim=args.hidden_dim, dropout=args.dropout)
     else:
