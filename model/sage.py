@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 import dgl
-from dgl import DGLGraph, transform
+from dgl import DGLGraph, transforms
 from dgl.nn.pytorch.conv import SAGEConv
 from utils.graph import numpy_to_graph
 
